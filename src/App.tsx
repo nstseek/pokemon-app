@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { usePokemon } from "./context/hooks/usePokemon";
+import { PokemonContext } from "./context/PokemonContext";
+import { Create } from "./pages/create/Create";
+import { Pokemon } from "./pages/pokemon/Pokemon";
+import { Pokemons } from "./pages/pokemons/Pokemons";
+import { Redirect } from "./pages/Redirect/Redirect";
 
-function App() {
+export default function App() {
+  const pokemonContextValue = usePokemon();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PokemonContext.Provider value={pokemonContextValue}>
+      <Router>
+        <Routes>
+          <Route path="/pokemons" element={<Pokemons />} />
+          <Route path="/pokemon/:name" element={<Pokemon />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/" element={<Redirect />} />
+        </Routes>
+      </Router>
+    </PokemonContext.Provider>
   );
 }
-
-export default App;
